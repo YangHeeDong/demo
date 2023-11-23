@@ -3,9 +3,7 @@ package com.example.demo.Question;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,9 +24,19 @@ public class QuestionController {
         return "question_list";
     }
 
+    // 화면 이동 Get
     @GetMapping("/create")
     public String questionCreate(){
         return "question_create";
+    }
+
+    // 글 작성 페이지 에서 넘어온 데이터 저장 처리
+    @PostMapping("/create")
+    public String questionCreate(@RequestParam String subject, @RequestParam String content){
+
+        this.questionService.create(subject, content);
+        // 저장 후 리다이렉트
+        return "redirect:/question/list";
     }
 
     @GetMapping("/detail/{id}")
