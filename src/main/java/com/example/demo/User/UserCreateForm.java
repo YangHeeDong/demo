@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 @Getter
 @Setter
-@Entity
 public class UserCreateForm {
     @Size(min=3, max=25)
     @NotEmpty
