@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class UserCreateForm {
     @Size(min=3, max=25)
     @NotEmpty
-    private String userName;
+    private String username;
 
     @NotEmpty(message = "비밀번호는 필수 항목 입니다.")
     private String password1;

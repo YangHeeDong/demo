@@ -1,6 +1,7 @@
 package com.example.demo.Question;
 
 import com.example.demo.DataNotFoundException;
+import com.example.demo.User.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,16 +18,28 @@ import java.util.Optional;
 @Service
 public class QuestionService {
 
-    private final QuestionRepository questionRepository;
-
-    public void create(String subject, String content){
+    public void create(String subject, String content, SiteUser user){
         Question question = new Question();
         question.setSubject(subject);
         question.setContent(content);
         question.setCreateDate(LocalDateTime.now());
+        question.setAuthor(user);
 
         this.questionRepository.save(question);
     }
+
+    public void delete(Question question){
+        this.questionRepository.delete(question);
+    }
+
+    public void modify(Question question, String subject, String content){
+        question.setSubject(subject);
+        question.setContent(content);
+        question.setModifyDate(LocalDateTime.now());
+        this.questionRepository.save(question);
+    }
+
+    private final QuestionRepository questionRepository;
 
     public List<Question> getList(){
         return questionRepository.findAll();
