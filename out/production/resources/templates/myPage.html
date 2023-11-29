@@ -1,0 +1,17 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container">
+    <h5 class="my-3 border-bottom pb-2">마이 페이지</h5>
+    <div class="mb-3">
+        <label class="fw-bold">ID</label>
+        <input th:placeholder="${username}" disabled class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label class="fw-bold">Email</label>
+        <input th:placeholder="${userEmail}" disabled class="form-control">
+    </div>
+    <div class="d-flex justify-content-end">
+        <a th:href="@{/user/modify}" class="btn btn-primary">수정</a>
+    </div>
+</div>
+</html>

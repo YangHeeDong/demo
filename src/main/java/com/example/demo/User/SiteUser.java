@@ -1,5 +1,6 @@
 package com.example.demo.User;
 
+import com.example.demo.ProfileImg.ProfileImg;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,4 +20,7 @@ public class SiteUser {
 
     @Column(unique = true)
     private String email;
+
+    @OneToOne(mappedBy = "siteUser", fetch = FetchType.LAZY)
+    private ProfileImg profileImg;
 }
