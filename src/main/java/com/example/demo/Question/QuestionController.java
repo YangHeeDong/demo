@@ -118,6 +118,7 @@ public class QuestionController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/vote/{id}")
+    @ResponseBody
     public String questionVote(Principal principal, @PathVariable("id") Integer id){
         Question question = this.questionService.getQusetion(id);
 
@@ -125,6 +126,6 @@ public class QuestionController {
 
         this.questionService.vote(question, siteUser);
 
-        return String.format("redirect:/question/detail/%s",id);
+        return "OK";
     }
 }

@@ -16,13 +16,12 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public SiteUser create(String userName, String email, String password, ProfileImg profileImg){
+    public SiteUser create(String userName, String email, String password){
         SiteUser user = new SiteUser();
         user.setUsername(userName);
         user.setEmail(email);
 
         user.setPassword(this.passwordEncoder.encode(password));
-        user.setProfileImg(profileImg);
 
         this.userRepository.save(user);
         return user;
@@ -32,6 +31,16 @@ public class UserService {
 
         SiteUser user = getUser(username);
         user.setPassword(this.passwordEncoder.encode(password));
+
+        this.userRepository.save(user);
+
+        return user;
+    }
+
+    public SiteUser changeProfile(String username, String profileImg){
+
+        SiteUser user = getUser(username);
+        user.getProfileImg().setUrl(profileImg);
 
         this.userRepository.save(user);
 

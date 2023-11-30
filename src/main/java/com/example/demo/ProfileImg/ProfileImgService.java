@@ -19,10 +19,11 @@ public class ProfileImgService {
 
     @Value("${imgFile.dir}")
     private String fileDir;
-    public ProfileImg ProfileImgForCreateUser(String url) {
+    public ProfileImg ProfileImgForCreateUser(SiteUser user, String savedName) {
 
         ProfileImg profileImg = new ProfileImg();
-        profileImg.setUrl(url);
+        profileImg.setUrl(savedName);
+        profileImg.setSiteUser(user);
 
         this.profileImgRepository.save(profileImg);
 
@@ -41,12 +42,20 @@ public class ProfileImgService {
 
         String extenstion = origName.substring(origName.lastIndexOf("."));
 
-        String savedName = uuid + extenstion;
+        String savedName = "/Image/" + uuid + extenstion;
 
-        String savedPath = fileDir + "/" +savedName;
+        String savedPath = fileDir +savedName;
         files.transferTo(new File(savedPath));
 
-        return savedPath;
+        return savedName;
+    }
+
+    public void deletFile(String fileName){
+
+        File file = new File(fileDir + fileName);
+
+        file.delete();
+
     }
 
 }
