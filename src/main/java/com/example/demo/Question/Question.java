@@ -32,9 +32,15 @@ public class Question {
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answerList;
 
+    // 글쓴이
     @ManyToOne
     private SiteUser author;
 
+    // 좋아요
     @ManyToMany
     Set<SiteUser> voter;
+
+    // 조회수
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int view;
 }

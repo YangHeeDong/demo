@@ -19,8 +19,12 @@
             </div>
             <div class="mt-2">
                 <!--   추천    -->
+                <div class="recommend btn btn-sm btn-outline-secondary">
+                    조회수
+                    <span class="badge rounded-pill bg-success" th:text="${question.view}"></span>
+                </div>
                 <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
-                   th:data-uri="@{|/question/vote/${question.id}|}">
+                   th:data-id="${question.id}" th:data-uri="@{|/question/vote|}">
                     추천
                     <span class="badge rounded-pill bg-success" th:text="${#lists.size(question.voter)}"></span>
                 </a>
@@ -68,7 +72,7 @@
             <div class="mt-1">
                 <!--  댓글 추천    -->
                 <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
-                   th:data-uri="@{|/answer/vote/${answer.id}|}">
+                   th:data-id="${answer.id}" th:data-uri="@{|/answer/vote|}">
                     추천
                     <span class="badge rounded-pill bg-success" th:text="${#lists.size(answer.voter)}"></span>
                 </a>
@@ -100,7 +104,6 @@
 </div>
 <script layout:fragment="script" type='text/javascript'>
     window.onload = function(){
-
         const delete_elements = document.getElementsByClassName("delete");
 
         Array.from(delete_elements).forEach(function(element) {
@@ -118,22 +121,35 @@
 
                 if(confirm("정말로 추천 하시겠습니까?")) {
 
-                    data1 = this.dataset.uri;
+                    el = this;
+                    var child = $(el).children('span');
+
+                    var header = $("meta[name='_csrf_header']").attr('content');
+                    var token = $("meta[name='_csrf']").attr('content');
+
+                    var request_url = el.dataset.uri
+                    var send_data = {
+				        id : el.dataset.id
+                    };
 
                     $.ajax({
-                        type:'GET',
-                        url:data1,
+                        type:'POST',
+                        url:request_url,
+                        beforeSend: function(xhr){
+                            xhr.setRequestHeader(header, token);
+                        },
+                        <!-- 보낼 데이터 -->
+                        data : JSON.stringify(send_data),
+                        <!-- 보낼 데이터 타입 -->
                         contentType:"application/json;charset=UTF-8",
+                        <!-- 받는 데이터 타입 -->
+                        dataType:"json",
                         success:function(result){
-                            if(result != "OK"){
-                                location.href="result";
-                            }else{
-                                alert(result);
-                            }
-
+                            child.text(result.recommend_count);
                         },
                         error : function(request, status, error){
-                        console.log(error)
+                            alert("로그인 후 이용해주세요");
+                            location.href="/user/login";
                         }
 
                     });
@@ -141,12 +157,6 @@
             });
         });
 
-
-
-
-
-
-
-    }
+}
 </script>
 </html>

@@ -5,6 +5,7 @@ import com.example.demo.Question.Question;
 import com.example.demo.Question.QuestionService;
 import com.example.demo.User.SiteUser;
 import com.example.demo.User.UserService;
+import com.google.gson.Gson;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -96,13 +99,30 @@ public class AnswerController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/vote/{id}")
-    public String answerVote(Principal principal, @PathVariable("id") Integer id){
-        Answer answer = this.answerService.getAnswer(id);
+    @PostMapping("/vote")
+    @ResponseBody
+    public String answerVote(Principal principal, @RequestBody Map<String, Object> paramMap){
+        Answer answer = this.answerService.getAnswer(Integer.parseInt((String) paramMap.get("id")));
         SiteUser siteUser =this.userService.getUser(principal.getName());
 
         this.answerService.vote(answer,siteUser);
-        return String.format("redirect:/question/detail/%s#answer_%s",answer.getQuestion().getId(),answer.getId());
+        Gson gson = new Gson();
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("status","OK");
+        map.put("recommend_count",answer.voter.size());
+
+
+        // 추천 취소는 어떻게 해야 할까 나중에 해보자
+        // 현재 구조에서는 여기서 넘겨주는게 좋음
+        // 추천 수 넘겨주기
+
+        //        {
+        //            status : "OK",
+        //            recommned_count : "12",
+        //        }
+
+        return gson.toJson(map);
     }
 
 }

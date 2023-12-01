@@ -3,6 +3,7 @@ package com.example.demo.Question;
 import com.example.demo.Answer.AnswerForm;
 import com.example.demo.User.SiteUser;
 import com.example.demo.User.UserService;
+import com.google.gson.Gson;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/question")
 @RequiredArgsConstructor
@@ -110,22 +113,39 @@ public class QuestionController {
     public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm){
 
         Question question = this.questionService.getQusetion(id);
+        this.questionService.View(question);
 
         model.addAttribute("question",question);
-
         return "question_detail";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/vote/{id}")
+    @PostMapping("/vote")
     @ResponseBody
-    public String questionVote(Principal principal, @PathVariable("id") Integer id){
-        Question question = this.questionService.getQusetion(id);
+    public String questionVote(Principal principal, @RequestBody Map<String, Object> paramMap){
+
+        // 추천 취소
+        Question question = this.questionService.getQusetion(Integer.parseInt((String) paramMap.get("id")));
 
         SiteUser siteUser = userService.getUser(principal.getName());
 
         this.questionService.vote(question, siteUser);
 
-        return "OK";
+        Gson gson = new Gson();
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("status","OK");
+        map.put("recommend_count",question.voter.size());
+
+
+        // 추천 취소는 어떻게 해야 할까 나중에 해보자
+        // 현재 구조에서는 여기서 넘겨주는게 좋음
+        // 추천 수 넘겨주기
+
+        //        {
+        //            status : "OK",
+        //            recommned_count : "12",
+        //        }
+
+        return gson.toJson(map);
     }
 }

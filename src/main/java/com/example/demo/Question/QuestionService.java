@@ -82,6 +82,12 @@ public class QuestionService {
         this.questionRepository.save(question);
     }
 
+    public void View(Question question){
+        question.setView(question.getView() + 1);
+        this.questionRepository.save(question);
+    }
+
+
     //  검색
     private Specification<Question> search(String kw){
 
