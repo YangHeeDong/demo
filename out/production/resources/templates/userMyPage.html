@@ -6,7 +6,7 @@
         <div class="col-4">
             <label for="profileImg" class="form-label fw-bold">프로필 이미지</label>
             <div id="image_container" class="text-center">
-                <img id="thumnail" class="rounded-circle img-thumbnail" th:src="${imgUrl}" alt="">
+                <img id="thumnail" class="rounded-circle img-thumbnail" th:src="@{|/Image/|}+${imgUrl}" alt="">
             </div>
         </div>
 
@@ -21,7 +21,7 @@
                 <input th:placeholder="${userEmail}" disabled class="form-control">
             </div>
             <div class="float-end">
-                <a th:href="@{/user/modify}" class="btn btn-primary">수정</a>
+                <a th:href="@{/user/userModify}" class="btn btn-primary">수정</a>
             </div>
         </div>
 

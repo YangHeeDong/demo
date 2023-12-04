@@ -5,7 +5,7 @@
             <h4>정보 수정</h4>
         </div>
     </div>
-    <form th:action="@{/user/modify}" th:object="${userCreateForm}" method="post" enctype="multipart/form-data">
+    <form th:action="@{/user/userModify}" th:object="${userCreateForm}" method="post" enctype="multipart/form-data">
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
         <div class="mb-3">
             <label for="username" class="form-label">사용자ID</label>
@@ -35,7 +35,7 @@
             <label for="profileImg" class="form-label">프로필 이미지</label>
             <div class="row mt-2 ">
                 <div id="image_container" class="col-3 text-center">
-                    <img id="thumnail" class="rounded-circle img-thumbnail" th:src="${imgUrl}" alt="">
+                    <img id="thumnail" class="rounded-circle img-thumbnail" th:src="@{|/Image/|}+${imgUrl}" alt="">
                 </div>
                 <div class="col-9">
                     <input type="file" class="form-control" id="imgData" name="imgData" accept="image/*" onchange="setThumbnail(event);">

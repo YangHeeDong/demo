@@ -36,6 +36,11 @@ dependencies {
 	implementation 'org.commonmark:commonmark:0.21.0'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'com.google.code.gson:gson:2.9.0'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	
+	// 메일링 서비스시 타임리프 사용하는 경우 아래두줄 추가 
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 }
 
 tasks.named('bootBuildImage') {

@@ -29,22 +29,22 @@ public class UserController {
     private final UserService userService;
     private final ProfileImgService profileImgService;
 
-    @GetMapping("/signup")
+    @GetMapping("/userSignup")
     public String signup(UserCreateForm userCreateForm){
-        return "signup_form";
+        return "userSignup_form";
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/userSignup")
     public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, @RequestParam MultipartFile imgData){
 
 
         if(bindingResult.hasErrors()){
-            return "signup_form";
+            return "userSignup_form";
         }
 
         if(!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())){
             bindingResult.rejectValue("password2","passwordInCorrect","2개의 패스워드가 일치하지 않습니다.");
-            return "signup_form";
+            return "userSignup_form";
         }
 
         try{
@@ -65,35 +65,35 @@ public class UserController {
         }catch (DataIntegrityViolationException e){
             e.printStackTrace();
             bindingResult.reject("signupFailed","이미 등록된 사용자 입니다.");
-            return "signup_form";
+            return "userSignup_form";
         }catch (Exception e){
             e.printStackTrace();
             bindingResult.reject("signup_Faild",e.getMessage());
-            return "signup_form";
+            return "userSignup_form";
         }
 
         return "redirect:/";
     }
 
-    @GetMapping("/login")
+    @GetMapping("/userLogin")
     public String login(){
-        return "login_form";
+        return "userLogin_form";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/myPage")
+    @GetMapping("/userMyPage")
     public String myPage(Model model, Principal principal){
         SiteUser siteUser = userService.getUser(principal.getName());
         model.addAttribute("username",siteUser.getUsername());
         model.addAttribute("userEmail",siteUser.getEmail());
         model.addAttribute("imgUrl",siteUser.getProfileImg().getUrl());
 
-        return "myPage";
+        return "userMyPage";
     }
 
     // 정보 수정 페이지 넘어가기
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/modify")
+    @GetMapping("/userModify")
     public String userModify(Principal principal, UserCreateForm userCreateForm, Model model){
         SiteUser siteUser = userService.getUser(principal.getName());
         userCreateForm.setUsername(siteUser.getUsername());
@@ -104,7 +104,7 @@ public class UserController {
 
     // 정보 수정
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/modify")
+    @PostMapping("/userModify")
     public String userModify(Principal principal,UserCreateForm userCreateForm,Model model, BindingResult bindingResult,@RequestParam MultipartFile imgData)throws IOException{
 
         // 만약 현재 로그인한 username과 UserCreateForm에 넘어온 username이 다르다면
@@ -136,7 +136,7 @@ public class UserController {
             userService.changeProfile(userCreateForm.getUsername(),this.profileImgService.saveFile(imgData));
         }
 
-        return "redirect:/user/myPage";
+        return "redirect:/user/userMyPage";
     }
 
 }

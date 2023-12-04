@@ -42,7 +42,7 @@ public class ProfileImgService {
 
         String extenstion = origName.substring(origName.lastIndexOf("."));
 
-        String savedName = "/Image/" + uuid + extenstion;
+        String savedName = uuid + extenstion;
 
         String savedPath = fileDir +savedName;
         files.transferTo(new File(savedPath));

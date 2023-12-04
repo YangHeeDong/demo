@@ -18,11 +18,11 @@
                 </div>
             </div>
             <div class="mt-2">
-                <!--   추천    -->
-                <div class="recommend btn btn-sm btn-outline-secondary">
+                <button class="btn btn-sm btn-outline-secondary" style="pointer-events: none;">
                     조회수
                     <span class="badge rounded-pill bg-success" th:text="${question.view}"></span>
-                </div>
+                </button>
+                <!--   추천    -->
                 <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
                    th:data-id="${question.id}" th:data-uri="@{|/question/vote|}">
                     추천
