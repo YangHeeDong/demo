@@ -47,7 +47,7 @@ public class UserService {
         return user;
     }
 
-    public SiteUser getUser(String username){
+    public SiteUser getUser(String username)  {
         Optional<SiteUser> siteUser = this.userRepository.findByUsername(username);
 
         if(siteUser.isPresent()){
@@ -55,6 +55,26 @@ public class UserService {
         }else{
             throw new DataNotFoundException("siteuser not found");
         }
-
     }
+
+//  상위 컨트롤러에서 exception을 받는 예시 / 메소드에 throws Exception 붙혀 주고 상위 컨트롤러에서 try catch로 예외처리
+//    public SiteUser getUser(String username)  throws Exception{
+//        Optional<SiteUser> siteUser = this.userRepository.findByUsername(username);
+//
+//        if(siteUser.isPresent()){
+//            return siteUser.get();
+//        }else{
+//            throw new DataNotFoundException("siteuser not found");
+//        }
+//    }
+
+    public SiteUser getUserForFindPassword(String username){
+        Optional<SiteUser> siteUser = this.userRepository.findByUsername(username);
+
+        if(siteUser.isPresent()){
+            return siteUser.get();
+        }
+        return null;
+    }
+
 }
