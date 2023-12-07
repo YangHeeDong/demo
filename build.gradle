@@ -42,6 +42,9 @@ dependencies {
 	// 메일링 서비스시 타임리프 사용하는 경우 아래두줄 추가 
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+	
+	// 소셜로그인
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
 
 tasks.named('bootBuildImage') {
